@@ -7,7 +7,7 @@ const userSchema = new Schema(
             type: String, 
             required: true,
             unique: true,
-            trim: true,
+            trim: true
         },
         email: {
             type: String, 
@@ -17,11 +17,28 @@ const userSchema = new Schema(
         },
         thoughts: [ {
             type: Schema.Types.ObjectId,
-            ref: 'Thought',
+            ref: 'Thought'
         }],
         friends: [{
             type: Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'User'
         }],
-    }
-);
+    },
+    {
+        toJSON: {
+            virtuals: true,
+        },
+        id: false,
+    });
+    userSchema.virtual('friendCount').get(function () {
+        return this.friends.length
+    });
+    
+    userSchema.pre('findOneAndDelete', { document: false, query: true }, async function() {
+        const doc = await this.model.findOne(this.getFilter());
+        console.log(doc.username);
+        await Thought.deleteMany({ username: doc.username });
+    });
+    
+    const User = model('User', userSchema);
+    module.exports = User;
