@@ -79,4 +79,10 @@ deleteFriend(req, res) {
   .then(() => res.json({ message: 'Friend deleted!' }))
   .catch((err) => res.status(500).json(err));
 },
+
+//GET FRIEND - FOR TESTING
+getFriend(req, res) {
+  return res.json({ message: 'Friend got!'})
+},
+
 };
