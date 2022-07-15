@@ -9,7 +9,9 @@ module.exports = {
   },
   //GETS SINGLE THOUGHT BY ID
   getSingleThought(req, res) {
-    Thought.findOne({ _id: req.params.userId })
+    Thought.findOne({ _id: req.params.thoughtId })
+      .select('-__v')
+      .populate('reactions')
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: 'No thought with that ID' })
@@ -39,7 +41,7 @@ module.exports = {
   },
   //DELETE A THOUGHT
   deleteThought(req, res) {
-    Thought.findOneAndDelete({ _id: req.params.thoughtId })
+    Thought.findByIdAndRemove({ _id: req.params.thoughtId })
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: 'No thought with that ID' })

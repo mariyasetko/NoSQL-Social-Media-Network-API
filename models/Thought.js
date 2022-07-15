@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 //REACTIONS ON POSTS BY USERS
 const reactionSchema = new Schema({
